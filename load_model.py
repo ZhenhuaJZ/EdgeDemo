@@ -29,12 +29,15 @@ def load_img():
 
 def main():
     tiramisu = load_model()
+    print("model_loaded")
     load_weights(tiramisu)
+    print("weights_loaded")
     input_data = load_img()
+    print("img_loaded")
     prediction = tiramisu.predict(input_data)
 
     print(prediction[0][0])
-    print(prediction.shape)
+    #print(prediction.shape)
 
 if __name__ == '__main__':
     main()
