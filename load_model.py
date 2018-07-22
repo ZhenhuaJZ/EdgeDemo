@@ -35,9 +35,22 @@ def main():
     input_data = load_img()
     print("img_loaded")
     prediction = tiramisu.predict(input_data)
+    prediction = tiramisu.predict(input_data).reshape(224,224,12)
+    # get color matrix
+    result = [np.argmax(prediction[i], axis=1) for i in range(224)]
+    result = np.array(result)
+    print(result)
 
-    print(prediction[0][0])
-    #print(prediction.shape)
+    #print(prediction)
+    # print(prediction.shape)
+    # w, h, c = np.indices(prediction.shape)
+    # print(c.shape)
+    # result = np.argmax(prediction, axis=1)
+    # print(result[0])
+    # print(result.shape)
+    #np.argmax()
+
+
 
 if __name__ == '__main__':
     main()
