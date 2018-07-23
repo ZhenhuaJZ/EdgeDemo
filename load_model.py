@@ -39,7 +39,7 @@ def main():
     # get color matrix
     result = [np.argmax(prediction[i], axis=1) for i in range(224)]
     result = np.array(result)
-    print(result)
+    print(result[0])
 
     #print(prediction)
     # print(prediction.shape)
