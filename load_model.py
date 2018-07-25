@@ -21,7 +21,7 @@ def load_weights(tiramisu):
 
 def load_img():
 
-    val_data_path = "CamVid/val/0016E5_08029.png"
+    val_data_path = "CamVid/val/0016E5_07959.png"
     img = np.rollaxis(normalized(cv2.imread(val_data_path)[136:,256:]),2)
     input_data = np.array(img).reshape(-1,224,224,3)
 
