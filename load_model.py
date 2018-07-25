@@ -71,6 +71,12 @@ def edge_roi(_class, result):
 
     return pixel
 
+def impose_to_img(pixels):
+    img = np.zeros((224,224,3), np.uint8)
+    img[:,:,:] = 255
+    for i in range(len(pixels)):
+        img[pixels[i][0], pixels[i][1]] = pixels[i][2:]
+    return img
 
 def main():
     tiramisu = load_model()
@@ -86,7 +92,10 @@ def main():
     # encoding pixels
     pixels = edge_roi(3, result) #[x,y, r, g, b]
     #send pixel
-
+    img = impose_to_img(pixels)
+    cv2.imshow("img",img)
+    cv2.waitKey(100000)
+    cv2.destroyAllWindows()
     # map = color_map(result)
     # cv2.imshow("color_map", map)
     # cv2.resizeWindow('color_map', 600,600)
