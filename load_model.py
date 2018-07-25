@@ -6,6 +6,7 @@ from helper import *
 
 model_name = 'tiramisu_fc_dense67_model_12_func.json'
 weights_path = 'weights/prop_tiramisu_weights_67_12_func_10-e7_decay.best.hdf5'
+val_data_path = "CamVid/val/0016E5_07959.png"
 # weights_path = "weights/prop_tiramisu_weights_67_12_func_10-e7_decay150.hdf5"
 # load the model:
 def load_model():
@@ -21,7 +22,6 @@ def load_weights(tiramisu):
 
 def load_img():
 
-    val_data_path = "CamVid/val/0016E5_07959.png"
     img = np.rollaxis(normalized(cv2.imread(val_data_path)[136:,256:]),2)
     input_data = np.array(img).reshape(-1,224,224,3)
 
@@ -54,20 +54,9 @@ def color_map(result):
             color_map[i,d] = color_coding[result[i,d]]
     return color_map
 
-def main():
-    tiramisu = load_model()
-    print("model_loaded")
-    load_weights(tiramisu)
-    print("weights_loaded")
-    input_data = load_img()
-    print("img_loaded")
-    prediction = tiramisu.predict(input_data)
-    prediction = tiramisu.predict(input_data).reshape(224,224,12)
-    # get color matrix
-    result = [np.argmax(prediction[i], axis=1) for i in range(224)]
-    result = np.array(result)
+def edge_roi(_class, result):
     #ROI return tuple
-    roi = np.where(result==3)
+    roi = np.where(result==_class)
 
     x = roi[0].tolist()
     y = roi[1].tolist()
@@ -75,13 +64,33 @@ def main():
     roi_list = []
     for i in zip(x, y):
         roi_list.append(list(i))
-    print("done")
+
+    capture_img = cv2.imread(val_data_path)
+    #encoding [x,y,r,g,b]
+    pixel = [loc + capture_img[loc[0],loc[1]].tolist() for loc in roi_list]
+
+    return pixel
+
+
+def main():
+    tiramisu = load_model()
+    print("model_loaded")
+    load_weights(tiramisu)
+    print("weights_loaded")
+    input_data = load_img()
+    print("img_loaded")
+
+    prediction = tiramisu.predict(input_data).reshape(224,224,12)
+    # get color matrix
+    result = np.array([np.argmax(prediction[i], axis=1) for i in range(224)])
+    # encoding pixels
+    pixels = edge_roi(3, result) #[x,y, r, g, b]
     #send pixel
 
-    #map = color_map(result)
-    #cv2.imshow("color_map", map)
-    #cv2.resizeWindow('color_map', 600,600)
-    #cv2.waitKey(50000)
+    # map = color_map(result)
+    # cv2.imshow("color_map", map)
+    # cv2.resizeWindow('color_map', 600,600)
+    # cv2.waitKey(50000)
 
 if __name__ == '__main__':
     main()
