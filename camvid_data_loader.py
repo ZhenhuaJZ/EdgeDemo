@@ -22,7 +22,6 @@ def load_data(mode):
         txt = f.readlines()
         txt = [line.split(' ') for line in txt]
     for i in range(len(txt)):
-        # data.append(np.rollaxis(normalized(cv2.imread(os.getcwd() + txt[i][0][7:])),2))
         # this load cropped images
         data.append(np.rollaxis(normalized(cv2.imread(os.getcwd() + txt[i][0][7:])[136:,256:]),2))
         label.append(one_hot_it(cv2.imread(os.getcwd() + txt[i][1][7:][:-1])[136:,256:][:,:,0],224,224))
