@@ -5,8 +5,8 @@ import numpy as np
 from helper import *
 
 model_name = 'tiramisu_fc_dense67_model_12_func.json'
-# weights_path = 'weights/prop_tiramisu_weights_67_12_func_10-e7_decay.best.hdf5'
-weights_path = "weights/prop_tiramisu_weights_67_12_func_10-e7_decay150.hdf5"
+weights_path = 'weights/prop_tiramisu_weights_67_12_func_10-e7_decay.best.hdf5'
+# weights_path = "weights/prop_tiramisu_weights_67_12_func_10-e7_decay150.hdf5"
 # load the model:
 def load_model():
 
@@ -66,12 +66,22 @@ def main():
     # get color matrix
     result = [np.argmax(prediction[i], axis=1) for i in range(224)]
     result = np.array(result)
+    #ROI return tuple
+    roi = np.where(result==3)
 
-    map = color_map(result)
+    x = roi[0].tolist()
+    y = roi[1].tolist()
 
-    cv2.imshow("color_map", map)
-    cv2.resizeWindow('color_map', 600,600)
-    cv2.waitKey(50000)
+    roi_list = []
+    for i in zip(x, y):
+        roi_list.append(list(i))
+    print("done")
+    #send pixel
+
+    #map = color_map(result)
+    #cv2.imshow("color_map", map)
+    #cv2.resizeWindow('color_map', 600,600)
+    #cv2.waitKey(50000)
 
 if __name__ == '__main__':
     main()
