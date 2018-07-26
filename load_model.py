@@ -7,7 +7,7 @@ import socket
 import re
 
 model_name = 'tiramisu_fc_dense67_model_12_func.json'
-weights_path = 'weights/prop_tiramisu_weights_67_12_func_10-e7_decay.best.hdf5'
+weights_path = 'weights/prop_tiramisu_weights_67_12_func_10-e7_decay.acc_0.91.hdf5'
 val_data_path = "CamVid/val/0016E5_07959.png"
 # weights_path = "weights/prop_tiramisu_weights_67_12_func_10-e7_decay150.hdf5"
 # load the model:
@@ -81,6 +81,7 @@ def client(roi_img):
     print(len(roi_img.encode('utf-8')))
     # while True:
     sock.send(roi_img.encode('utf-8'))
+    # sock.send(roi_img.encode('utf-8')[int(len(roi_img.encode('utf-8'))/2)+1:])
     print("sent roi")
     sock.close()
 
@@ -103,20 +104,18 @@ def main():
     # get color matrix
     result = np.array([np.argmax(prediction[i], axis=1) for i in range(224)])
     # encoding pixels
-    pixels = edge_roi(4, result) #[x,y, r, g, b]
-    print(pixels[-10:])
+    pixels = edge_roi(3, result) #[x,y, r, g, b]
     # pixels = re.sub('[][,]', '', str(pixels))
     pixels = str(pixels)[1:-1] #get rid off []
     #send pixel
-<<<<<<< HEAD
     client(pixels)
 
-=======
-    img = impose_to_img(pixels)
-    cv2.imshow("img",img)
-    cv2.waitKey(100000)
-    cv2.destroyAllWindows()
->>>>>>> a54e9cbe3ac09172c6220518c658bb3a2cde4479
+    # img = impose_to_img(pixels)
+    # cv2.imshow("img",img)
+    # cv2.waitKey(100000)
+    # cv2.destroyAllWindows()
+
+
     # map = color_map(result)
     # cv2.imshow("color_map", map)
     # cv2.resizeWindow('color_map', 600,600)

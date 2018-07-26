@@ -1,8 +1,7 @@
 import socket
 import cv2
-import numpy
+import numpy as np
 import re, ast
-
 
 address = ('127.0.0.1', 8002)
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -24,7 +23,7 @@ data_list = []
 
 while True:
     # string list to int list
-    data = recvall(conn,8192)
+    data = recvall(conn,1)
     # data = numpy.fromstring(data, dtype='uint8', sep = " ")
     #print(data)
     if not data:
@@ -33,11 +32,23 @@ while True:
     data_list.append(data.decode("utf-8"))
     # data_list.append(data.decode("utf-8"))
 
-f_data = ''.join(data_list)
-print(f_data)
-print(len(f_data))
-# f_data = ast.literal_eval(f_data)
+def impose_to_img(pixels):
+    img = np.zeros((224,224,3), np.uint8)
+    img[:,:,:] = 255
+    for i in range(len(pixels)):
+        img[pixels[i][0], pixels[i][1]] = pixels[i][2:]
+    return img
 
+f_data = ''.join(data_list)
+
+f_data = ast.literal_eval(f_data)
+print(type(f_data))
+print(f_data[0][1])
+
+img = impose_to_img(f_data)
+cv2.imshow("img",img)
+cv2.waitKey(10000)
+cv2.destroyAllWindows()
 s.close()
 
 # address = ('127.0.0.1', 8002)
