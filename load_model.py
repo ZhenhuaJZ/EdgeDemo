@@ -7,7 +7,7 @@ import socket
 import re
 
 model_name = 'tiramisu_fc_dense67_model_12_func.json'
-weights_path = 'weights/prop_tiramisu_weights_67_12_func_10-e7_decay.acc_0.91.hdf5'
+weights_path = 'weights/prop_tiramisu_weights_67_12_func_10-e7_decay.best.hdf5'
 val_data_path = "CamVid/val/0016E5_07959.png"
 # weights_path = "weights/prop_tiramisu_weights_67_12_func_10-e7_decay150.hdf5"
 # load the model:
