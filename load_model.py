@@ -84,6 +84,13 @@ def client(roi_img):
     print("sent roi")
     sock.close()
 
+def impose_to_img(pixels):
+    img = np.zeros((224,224,3), np.uint8)
+    img[:,:,:] = 255
+    for i in range(len(pixels)):
+        img[pixels[i][0], pixels[i][1]] = pixels[i][2:]
+    return img
+
 def main():
     tiramisu = load_model()
     print("model_loaded")
@@ -101,8 +108,15 @@ def main():
     # pixels = re.sub('[][,]', '', str(pixels))
     pixels = str(pixels)[1:-1] #get rid off []
     #send pixel
+<<<<<<< HEAD
     client(pixels)
 
+=======
+    img = impose_to_img(pixels)
+    cv2.imshow("img",img)
+    cv2.waitKey(100000)
+    cv2.destroyAllWindows()
+>>>>>>> a54e9cbe3ac09172c6220518c658bb3a2cde4479
     # map = color_map(result)
     # cv2.imshow("color_map", map)
     # cv2.resizeWindow('color_map', 600,600)
