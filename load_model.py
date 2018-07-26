@@ -78,7 +78,7 @@ def client(roi_img):
     address = ('192.168.1.111', 8002)
     sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     sock.connect(address)
-    print(len(roi_img.encode('utf-8')))
+    # print(len(roi_img.encode('utf-8')))
     # while True:
     sock.send(roi_img.encode('utf-8'))
     # sock.send(roi_img.encode('utf-8')[int(len(roi_img.encode('utf-8'))/2)+1:])
