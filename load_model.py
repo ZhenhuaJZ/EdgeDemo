@@ -3,6 +3,8 @@ import cv2
 import os
 import numpy as np
 from helper import *
+import socket
+import re
 
 model_name = 'tiramisu_fc_dense67_model_12_func.json'
 weights_path = 'weights/prop_tiramisu_weights_67_12_func_10-e7_decay.best.hdf5'
@@ -68,9 +70,19 @@ def edge_roi(_class, result):
     capture_img = cv2.imread(val_data_path)
     #encoding [x,y,r,g,b]
     pixel = [loc + capture_img[loc[0],loc[1]].tolist() for loc in roi_list]
+    # pixel = list(itertools.chain(*pixel)) #to flat list
 
     return pixel
 
+def client(roi_img):
+    address = ('127.0.0.1', 8002)
+    sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    sock.connect(address)
+    print(len(roi_img.encode('utf-8')))
+    # while True:
+    sock.send(roi_img.encode('utf-8'))
+    print("sent roi")
+    sock.close()
 
 def main():
     tiramisu = load_model()
@@ -84,13 +96,18 @@ def main():
     # get color matrix
     result = np.array([np.argmax(prediction[i], axis=1) for i in range(224)])
     # encoding pixels
-    pixels = edge_roi(3, result) #[x,y, r, g, b]
+    pixels = edge_roi(4, result) #[x,y, r, g, b]
+    print(pixels[-10:])
+    # pixels = re.sub('[][,]', '', str(pixels))
+    pixels = str(pixels)[1:-1] #get rid off []
     #send pixel
+    client(pixels)
 
     # map = color_map(result)
     # cv2.imshow("color_map", map)
     # cv2.resizeWindow('color_map', 600,600)
-    # cv2.waitKey(50000)
+    # cv2.waitKey(5000)
+
 
 if __name__ == '__main__':
     main()

@@ -21,5 +21,18 @@ while ret:
     #cv2.imshow('CLIENT',decimg)
     if cv2.waitKey(10) == 27:
         break
+
 sock.close()
 cv2.destroyAllWindows()
+
+"""
+import socket
+
+s = socket.socket()
+host = socket.gethostname()
+port = 12345
+
+s.connect((host, port))
+print s.recv(1024)
+s.close()
+"""
