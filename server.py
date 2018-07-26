@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 import re, ast
 
-address = ('192.168.1.66', 8002)
+address = ('192.168.1.111', 8002)
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind(address)
 s.listen(True)
@@ -42,12 +42,10 @@ def impose_to_img(pixels):
 f_data = ''.join(data_list)
 
 f_data = ast.literal_eval(f_data)
-print(type(f_data))
-print(f_data[0][1])
 
 img = impose_to_img(f_data)
 cv2.imshow("img",img)
-cv2.waitKey(10000)
+cv2.waitKey(100000)
 cv2.destroyAllWindows()
 s.close()
 

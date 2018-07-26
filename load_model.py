@@ -67,7 +67,11 @@ def edge_roi(_class, result):
     for i in zip(x, y):
         roi_list.append(list(i))
 
-    capture_img = cv2.imread(val_data_path)
+    capture_img = cv2.imread(val_data_path)[136:,256:]
+    # capture_img = cv2.imread(val_data_path)
+    # cv2.imshow("img",capture_img)
+    # cv2.waitKey(100000)
+    # cv2.destroyAllWindows()
     #encoding [x,y,r,g,b]
     pixel = [loc + capture_img[loc[0],loc[1]].tolist() for loc in roi_list]
     # pixel = list(itertools.chain(*pixel)) #to flat list
