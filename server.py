@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 import re, ast
 
-address = ('127.0.0.1', 8002)
+address = ('192.168.1.66', 8002)
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind(address)
 s.listen(True)

@@ -75,7 +75,7 @@ def edge_roi(_class, result):
     return pixel
 
 def client(roi_img):
-    address = ('127.0.0.1', 8002)
+    address = ('192.168.1.111', 8002)
     sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     sock.connect(address)
     print(len(roi_img.encode('utf-8')))
